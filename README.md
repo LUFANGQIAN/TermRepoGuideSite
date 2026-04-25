@@ -1,6 +1,6 @@
-# TermRepo Guide Site
+# TermRepo WebSite
 
-TermRepo Guide Site 是 `TermRepo` 项目中的指南站前端，用来对外说明产品定位、功能价值、安装方式、使用方法、常见问题与路线图。
+TermRepo WebSite 是 `TermRepo` 项目中的指南站前端，用来对外说明产品定位、功能价值、安装方式、使用方法、常见问题与路线图。
 
 它不是管理后台，也不是云服务控制台。这个站点更像一个面向开发者的产品说明站，核心任务是帮助用户快速理解：
 
