@@ -33,16 +33,29 @@
 :root {
   --ds-background: #ffffff;
   --ds-background-100: #fafafa;
+  --ds-background-200: #f5f5f5;
   --ds-text: #171717;
+  --ds-gray-700: #333333;
   --ds-gray-600: #4d4d4d;
   --ds-gray-500: #666666;
   --ds-gray-400: #808080;
+  --ds-gray-300: #a3a3a3;
+  --ds-gray-200: #d4d4d4;
   --ds-gray-100: #ebebeb;
+  --ds-gray-50: #f5f5f5;
   --ds-blue: #0a72ef;
   --ds-blue-soft: #ebf5ff;
   --ds-blue-text: #0068d6;
+  --ds-green: #0cce6b;
+  --ds-green-soft: #e6f9ee;
+  --ds-green-text: #008a4b;
   --ds-pink: #de1d8d;
-  --ds-red: #ff5b4f;
+  --ds-amber: #f5a623;
+  --ds-amber-soft: #fff5e0;
+  --ds-amber-text: #ad6c0a;
+  --ds-red: #e5484d;
+  --ds-red-soft: #fdecec;
+  --ds-red-text: #c8312f;
   --ds-link: #0072f5;
   --ds-focus: hsla(212, 100%, 48%, 1);
   --ds-radius-sm: 6px;
@@ -58,6 +71,9 @@
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px,
     rgba(0, 0, 0, 0.04) 0px 2px 2px,
     #fafafa 0px 0px 0px 1px;
+  --ds-shadow-overlay:
+    rgba(0, 0, 0, 0.16) 0px 16px 32px -8px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   --font-sans: 'Geist', Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
   --font-mono:
     'Geist Mono',
@@ -86,12 +102,10 @@ html {
 body {
   min-height: 100vh;
   color: var(--ds-text);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(10, 114, 239, 0.06), transparent 28%),
-    linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
+  background: var(--ds-background-100);
   line-height: 1.5;
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   font-feature-settings: 'liga' 1;
   text-rendering: optimizeLegibility;
@@ -119,15 +133,43 @@ select:focus-visible {
   outline-offset: 2px;
 }
 
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 button,
 input,
 textarea,
 select {
   font: inherit;
+  color: inherit;
+}
+
+input,
+textarea,
+select {
+  background: var(--ds-background);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--ds-gray-400);
 }
 
 img,
 svg {
   display: block;
   max-width: 100%;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-feature-settings: 'liga' 1, 'tnum' 1;
 }
