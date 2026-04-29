@@ -212,7 +212,12 @@ onMounted(loadAll)
         </div>
         <div class="metric-card">
           <span class="metric-card__label">同步词库数量</span>
-          <span class="metric-card__value">{{ status.termCount }}</span>
+          <span class="metric-card__value">
+            {{ status.termCount }}
+            <span class="muted" style="font-size: 14px; font-weight: 500;">
+              / {{ status.termLimit }}
+            </span>
+          </span>
           <span class="metric-card__hint">
             快照版本 v{{ status.snapshotVersion }}
           </span>

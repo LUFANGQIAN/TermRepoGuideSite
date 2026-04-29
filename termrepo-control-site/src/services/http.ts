@@ -4,7 +4,6 @@ import axios, {
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from 'axios'
-import { handleMock } from '@/mock'
 
 export interface ApiEnvelope<T = unknown> {
   code: number
@@ -12,10 +11,13 @@ export interface ApiEnvelope<T = unknown> {
   data: T
 }
 
-const useMock = (import.meta.env.VITE_USE_MOCK ?? 'true') !== 'false'
+const useMock = import.meta.env.VITE_USE_MOCK === 'true'
+const apiBaseURL =
+  import.meta.env.VITE_API_BASE_URL ??
+  (import.meta.env.DEV ? 'http://localhost:3000/api/v1' : '')
 
 export const http: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ?? '/api/v1',
+  baseURL: apiBaseURL,
   timeout: 15000,
 })
 
@@ -45,6 +47,7 @@ function parseBody(data: unknown): unknown {
 if (useMock) {
   http.interceptors.request.use(async (config) => {
     const adapter = async (cfg: AxiosRequestConfig): Promise<AxiosResponse<ApiEnvelope>> => {
+      const { handleMock } = await import('@/mock')
       const result = await handleMock({
         method: (cfg.method ?? 'get').toUpperCase(),
         url: cfg.url ?? '',

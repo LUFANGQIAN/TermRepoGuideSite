@@ -160,3 +160,7 @@ npm run type-check
 ## 一句话总结
 
 `TermRepoWebSite` 现在不是单一指南站仓库，而是同时承载“指南站 + 管理站”两个前端入口的网页工作区。
+
+## termrepo-admin-site
+
+`termrepo-admin-site` 是独立管理站，面向服务部署者/管理员。它通过 `VITE_API_BASE_URL` 连接后端，用于配置全局 AI 模型、默认额度和用户权限。普通用户仍使用 `termrepo-control-site`。

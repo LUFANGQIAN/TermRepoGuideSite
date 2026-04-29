@@ -5,6 +5,7 @@ export type SyncStatusKind = 'success' | 'conflict' | 'failed' | 'running'
 export interface SyncStatus {
   enabled: boolean
   termCount: number
+  termLimit: number
   lastSyncAt: string | null
   lastSyncStatus: SyncStatusKind
   pendingConflicts: number
@@ -55,27 +56,27 @@ export const syncApi = {
   },
 
   devices() {
-    return api<{ items: Device[] }>({ url: '/sync/devices', method: 'GET' })
+    return Promise.resolve({ items: [] as Device[] })
   },
 
-  removeDevice(id: string) {
-    return api<null>({ url: `/sync/devices/${id}`, method: 'DELETE' })
+  removeDevice(_id: string) {
+    return Promise.resolve(null)
   },
 
   trigger() {
-    return api<SyncJob>({ url: '/sync/trigger', method: 'POST' })
+    return Promise.resolve({
+      jobId: 'local-refresh',
+      status: 'success' as SyncStatusKind,
+      startedAt: new Date().toISOString(),
+    })
   },
 
   conflicts() {
-    return api<{ items: Conflict[] }>({ url: '/sync/conflicts', method: 'GET' })
+    return Promise.resolve({ items: [] as Conflict[] })
   },
 
-  resolveConflict(id: string, resolution: 'local' | 'remote' | 'merge') {
-    return api<null>({
-      url: `/sync/conflicts/${id}/resolve`,
-      method: 'POST',
-      data: { resolution },
-    })
+  resolveConflict(_id: string, _resolution: 'local' | 'remote' | 'merge') {
+    return Promise.resolve(null)
   },
 
   exportSnapshot() {
@@ -86,7 +87,7 @@ export const syncApi = {
   },
 
   importSnapshot(mode: 'overwrite' | 'merge', snapshot: unknown) {
-    return api<{ imported: number; skipped: number; snapshotVersion: number }>({
+    return api<{ imported: number; skipped: number; snapshotVersion: number; termCount: number; termLimit: number }>({
       url: '/sync/snapshot/import',
       method: 'POST',
       data: { mode, snapshot },

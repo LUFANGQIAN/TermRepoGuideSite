@@ -22,10 +22,12 @@ const register: MockHandler = (req) => {
     id,
     email,
     username: username || email.split('@')[0] || email,
+    role: 'user',
     password,
     betaStatus: 'none',
     aiEnabled: false,
     syncEnabled: false,
+    syncTermLimit: 500,
     tokenValid: true,
     createdAt: nowIso(),
   }
@@ -44,6 +46,7 @@ const register: MockHandler = (req) => {
       id: user.id,
       email: user.email,
       username: user.username,
+      role: user.role,
       createdAt: user.createdAt,
     },
   })
@@ -68,6 +71,7 @@ const login: MockHandler = (req) => {
       id: user.id,
       email: user.email,
       username: user.username,
+      role: user.role,
       createdAt: user.createdAt,
     },
   })
@@ -90,6 +94,7 @@ const me: MockHandler = (req) => {
     betaStatus: user.betaStatus,
     aiEnabled: user.aiEnabled,
     syncEnabled: user.syncEnabled,
+    syncTermLimit: user.syncTermLimit,
     tokenValid: user.tokenValid,
     createdAt: user.createdAt,
   })

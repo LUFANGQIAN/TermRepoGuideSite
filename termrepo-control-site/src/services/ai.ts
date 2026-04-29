@@ -3,6 +3,17 @@ import { api } from './http'
 export interface AiStatus {
   enabled: boolean
   model: string
+  provider: {
+    configured: boolean
+    enabled: boolean
+    baseUrl: string
+    model: string
+    hasApiKey: boolean
+    lastTestStatus: 'success' | 'failed' | 'untested'
+    lastTestMessage: string
+    lastTestAt: string | null
+    updatedAt: string | null
+  }
   quota: {
     weekly: { limit: number; used: number }
     monthly: { limit: number; used: number }

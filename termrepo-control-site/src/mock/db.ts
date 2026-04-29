@@ -66,6 +66,7 @@ function defaultSync(): SyncStatus {
   return {
     enabled: true,
     termCount: 482,
+    termLimit: 1000,
     lastSyncAt: '2026-04-25T09:42:13.000Z',
     lastSyncStatus: 'conflict',
     pendingConflicts: 2,
@@ -127,6 +128,17 @@ function defaultAi(): AiStatus {
   return {
     enabled: true,
     model: 'claude-haiku-4-5',
+    provider: {
+      configured: true,
+      enabled: true,
+      baseUrl: 'https://api.termrepo.dev/ai/v1',
+      model: 'claude-haiku-4-5',
+      hasApiKey: true,
+      lastTestStatus: 'success',
+      lastTestMessage: 'ok',
+      lastTestAt: '2026-04-25T09:42:13.000Z',
+      updatedAt: '2026-04-25T09:42:13.000Z',
+    },
     quota: {
       weekly: { limit: 200, used: 36 },
       monthly: { limit: 1000, used: 148 },
@@ -332,10 +344,12 @@ function bootstrapDb(): MockDb {
     id: seedUserId,
     email: 'demo@termrepo.dev',
     username: 'demo',
+    role: 'user',
     password: 'demo1234',
     betaStatus: 'approved',
     aiEnabled: true,
     syncEnabled: true,
+    syncTermLimit: 1000,
     tokenValid: true,
     createdAt: '2026-03-10T10:00:00.000Z',
   }

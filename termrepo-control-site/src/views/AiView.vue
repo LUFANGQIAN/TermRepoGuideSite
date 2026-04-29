@@ -86,10 +86,10 @@ onMounted(loadAll)
         <div class="metric-card">
           <span class="metric-card__label">使用模型</span>
           <span class="metric-card__value" style="font-size: 18px">
-            {{ status.model }}
+            {{ status.provider.configured ? status.provider.model : '未检测到模型' }}
           </span>
           <span class="metric-card__hint">
-            模型可能根据成本与稳定性调整
+            {{ status.provider.configured ? '由服务管理员在管理站配置' : '请联系服务管理员完成 AI 模型配置' }}
           </span>
         </div>
 
@@ -131,6 +131,13 @@ onMounted(loadAll)
           <span class="metric-card__hint">
             重置于 {{ formatDateTime(status.resetAt.monthly) }}
           </span>
+        </div>
+      </section>
+
+      <section v-if="!status.provider.configured" class="card" style="margin-top: 24px">
+        <div class="empty">
+          <span class="empty__title">未检测到 AI 模型</span>
+          <span>当前服务还没有在管理站配置模型端点与 API Key。配置完成后，插件收藏术语时即可使用 AI 辅助翻译。</span>
         </div>
       </section>
 

@@ -1,4 +1,4 @@
-import { api } from './http'
+﻿import { api } from './http'
 
 export interface User {
   id: string
@@ -16,35 +16,17 @@ export interface User {
 export interface AuthResp {
   accessToken: string
   refreshToken: string
-  user: Pick<User, 'id' | 'email' | 'username' | 'createdAt'>
+  user: Pick<User, 'id' | 'email' | 'username' | 'role' | 'createdAt'>
 }
 
 export const authApi = {
   login(email: string, password: string) {
-    return api<AuthResp>({
-      url: '/auth/login',
-      method: 'POST',
-      data: { email, password },
-    })
+    return api<AuthResp>({ url: '/auth/login', method: 'POST', data: { email, password } })
   },
-
-  register(email: string, password: string, username: string) {
-    return api<AuthResp>({
-      url: '/auth/register',
-      method: 'POST',
-      data: { email, password, username },
-    })
-  },
-
   me() {
     return api<User>({ url: '/auth/me', method: 'GET' })
   },
-
   logout(refreshToken?: string | null) {
-    return api<null>({
-      url: '/auth/logout',
-      method: 'POST',
-      data: { refreshToken },
-    })
+    return api<null>({ url: '/auth/logout', method: 'POST', data: { refreshToken } })
   },
 }

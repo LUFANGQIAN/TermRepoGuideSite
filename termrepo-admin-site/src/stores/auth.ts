@@ -1,9 +1,9 @@
-import { defineStore } from 'pinia'
+﻿import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authApi, type User } from '@/services/auth'
 
-const TOKEN_KEY = 'trp.access_token'
-const REFRESH_KEY = 'trp.refresh_token'
+const TOKEN_KEY = 'trp.admin_access_token'
+const REFRESH_KEY = 'trp.admin_refresh_token'
 
 export const useAuthStore = defineStore('auth', () => {
   const accessToken = ref<string | null>(localStorage.getItem(TOKEN_KEY))
@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
   const initialized = ref(false)
   const loading = ref(false)
 
-  const isLoggedIn = computed(() => !!accessToken.value)
+  const isLoggedIn = computed(() => !!accessToken.value && user.value?.role === 'admin')
 
   function setTokens(at: string | null, rt: string | null) {
     accessToken.value = at
@@ -29,17 +29,10 @@ export const useAuthStore = defineStore('auth', () => {
       const r = await authApi.login(email, password)
       setTokens(r.accessToken, r.refreshToken)
       await fetchMe()
-    } finally {
-      loading.value = false
-    }
-  }
-
-  async function register(email: string, password: string, username: string) {
-    loading.value = true
-    try {
-      const r = await authApi.register(email, password, username)
-      setTokens(r.accessToken, r.refreshToken)
-      await fetchMe()
+      if (user.value?.role !== 'admin') {
+        await logout()
+        throw new Error('当前账号不是管理员')
+      }
     } finally {
       loading.value = false
     }
@@ -53,6 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
     try {
       user.value = await authApi.me()
+      if (user.value.role !== 'admin') setTokens(null, null)
     } catch (_e) {
       setTokens(null, null)
       user.value = null
@@ -72,22 +66,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  function patchUser(patch: Partial<User>) {
-    if (!user.value) return
-    user.value = { ...user.value, ...patch }
-  }
-
-  return {
-    accessToken,
-    refreshToken,
-    user,
-    initialized,
-    loading,
-    isLoggedIn,
-    login,
-    register,
-    fetchMe,
-    logout,
-    patchUser,
-  }
+  return { accessToken, refreshToken, user, initialized, loading, isLoggedIn, login, fetchMe, logout }
 })
